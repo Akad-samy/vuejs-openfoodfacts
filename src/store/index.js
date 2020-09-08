@@ -24,20 +24,26 @@ export default new Vuex.Store({
   mutations: {
     SET_PRODUCTS(state, products) {
       return state.products = products;
+    },
+    SET_SEARCH(state, value) {
+      return state.search = value;
+    },
+    CHANGE_LOADER(state, value) {
+      return state.loader = value;
     }
   },
   actions: {
     getProducts({commit, state}) {
       commit('SET_PRODUCTS', null)
-      state.loader = true;
+      commit('CHANGE_LOADER', true)
       return axios.get(`https://fr.openfoodfacts.org/cgi/search.pl?action=process&search_terms=${state.search}&json=true`)
       .then(response => {
         commit('SET_PRODUCTS', response.data.products)
-        state.loader = false;
+        commit('CHANGE_LOADER', false)
       }).catch(e => {
         console.log(e)
       })
-    }
+    },
   },
   modules: {
   }

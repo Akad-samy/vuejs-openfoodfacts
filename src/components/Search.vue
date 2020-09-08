@@ -4,13 +4,22 @@
   >
     <h1 class="font-weight-bold my-4">Cherchez Votre Produit !</h1>
     <div class="form">
-      <input type="text" class="neomorphism" v-model="$store.state.search"/>
+      <input type="text" class="neomorphism" v-model="search" />
 
-      <button type="submit" class="btn btn-warning py-3" @click="getProducts()">
-        <icon-base icon-name="search" width="18" height="18"
+      <button
+        type="submit"
+        class="btn btn-warning py-3"
+        @click="getProducts()"
+        :disabled="Loader === true"
+      >
+        <icon-base
+          v-if="Loader === false"
+          icon-name="search"
+          width="18"
+          height="18"
           ><search-icon />
         </icon-base>
-        <!-- <div class="loader" v-if="loader === true"></div> -->
+        <div class="loader" v-if="Loader === true"></div>
       </button>
     </div>
   </div>
@@ -19,7 +28,7 @@
 <script>
 import IconBase from "./IconBase.vue";
 import SearchIcon from "./icons/SearchIcon.vue";
-// import { mapGetters } from 'vuex';
+import { mapGetters } from "vuex";
 export default {
   name: "Search",
   components: {
@@ -27,11 +36,23 @@ export default {
     SearchIcon,
   },
   computed: {
+    ...mapGetters(["Loader"]),
+    search: {
+      get() {
+        return this.$store.state.search;
+      },
+      set(value) {
+        this.$store.commit("SET_SEARCH", value);
+      },
+    },
   },
   methods: {
     getProducts() {
-      console.log(this.$store.dispatch("getProducts"));
+      this.$store.dispatch("getProducts");
     },
+  },
+  beforeMount() {
+    this.getProducts();
   },
 };
 </script>
@@ -74,7 +95,11 @@ input:focus {
 }
 
 @keyframes spin {
-  0% { transform: rotate(0deg); }
-  100% { transform: rotate(360deg); }
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
 }
 </style>

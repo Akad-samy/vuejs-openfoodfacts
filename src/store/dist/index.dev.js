@@ -35,6 +35,12 @@ var _default = new _vuex["default"].Store({
   mutations: {
     SET_PRODUCTS: function SET_PRODUCTS(state, products) {
       return state.products = products;
+    },
+    SET_SEARCH: function SET_SEARCH(state, value) {
+      return state.search = value;
+    },
+    CHANGE_LOADER: function CHANGE_LOADER(state, value) {
+      return state.loader = value;
     }
   },
   actions: {
@@ -42,10 +48,10 @@ var _default = new _vuex["default"].Store({
       var commit = _ref.commit,
           state = _ref.state;
       commit('SET_PRODUCTS', null);
-      state.loader = true;
+      commit('CHANGE_LOADER', true);
       return _axios["default"].get("https://fr.openfoodfacts.org/cgi/search.pl?action=process&search_terms=".concat(state.search, "&json=true")).then(function (response) {
         commit('SET_PRODUCTS', response.data.products);
-        state.loader = false;
+        commit('CHANGE_LOADER', false);
       })["catch"](function (e) {
         console.log(e);
       });
