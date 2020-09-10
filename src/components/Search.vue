@@ -5,7 +5,6 @@
     <h1 class="font-weight-bold my-4">Cherchez Votre Produit !</h1>
     <div class="form">
       <input type="text" class="neomorphism" v-model="search" />
-
       <button
         type="submit"
         class="btn btn-warning py-3"
@@ -31,29 +30,24 @@ import SearchIcon from "./icons/SearchIcon.vue";
 import { mapGetters } from "vuex";
 export default {
   name: "Search",
+  data: () => ({
+    search:""
+  }),
   components: {
     IconBase,
     SearchIcon,
   },
   computed: {
-    ...mapGetters('Products', ["getLoader"]),
-    search: {
-      get() {
-        return this.$store.state.search;
-      },
-      set(value) {
-        this.$store.commit("Products/SET_SEARCH", value);
-      },
-    },
+    ...mapGetters('Products', ["getLoader", "getSearch"]),
   },
   methods: {
     getProducts() {
+      this.$store.commit("Products/SET_SEARCH", this.search)
       this.$store.dispatch("Products/getProducts");
     },
   },
   beforeMount() {
     this.getProducts();
-    console.log(process.env.VUE_APP_BASE_URL);
   },
 };
 </script>

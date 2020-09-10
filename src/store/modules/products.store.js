@@ -21,13 +21,13 @@ const getters = {
 }
 
 const actions = {
-    async getProducts({commit, state}) {
+    getProducts({commit, state}) {
         try {
-            commit('SET_PRODUCTS', null)
-            commit('CHANGE_LOADER', true)
-            const response = await getAllProducts(state.search, state.pageSize, state.page);
-            commit('SET_PRODUCTS', response.data.data);
-            commit('CHANGE_LOADER', false)
+            return getAllProducts(state.search, state.pageSize, state.page).then(response => {
+                commit('CHANGE_LOADER', true)
+                commit('SET_PRODUCTS', response.data.data);
+                commit('CHANGE_LOADER', false)
+            })
         } catch (error) {
             console.log(error)
         }   
