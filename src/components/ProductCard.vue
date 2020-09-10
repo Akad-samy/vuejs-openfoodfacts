@@ -1,7 +1,7 @@
 <template>
   <div class="myCard neomorphism">
     <div class="image">
-      <img v-if="image" :src="image" :alt="brand" />
+      <img v-if="image" :src="image" :alt="brand" onerror="this.src='/images/logo.png';"/>
       <img v-else class="defaultImg" src="/images/logo.png" :alt="brand" />
     </div>
     <div class="title">

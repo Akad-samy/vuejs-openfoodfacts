@@ -10,16 +10,16 @@
         type="submit"
         class="btn btn-warning py-3"
         @click="getProducts()"
-        :disabled="Loader === true"
+        :disabled="getLoader === true"
       >
         <icon-base
-          v-if="Loader === false"
+          v-if="getLoader === false"
           icon-name="search"
           width="18"
           height="18"
           ><search-icon />
         </icon-base>
-        <div class="loader" v-if="Loader === true"></div>
+        <div class="loader" v-if="getLoader === true"></div>
       </button>
     </div>
   </div>
@@ -36,23 +36,24 @@ export default {
     SearchIcon,
   },
   computed: {
-    ...mapGetters(["Loader"]),
+    ...mapGetters('Products', ["getLoader"]),
     search: {
       get() {
         return this.$store.state.search;
       },
       set(value) {
-        this.$store.commit("SET_SEARCH", value);
+        this.$store.commit("Products/SET_SEARCH", value);
       },
     },
   },
   methods: {
     getProducts() {
-      this.$store.dispatch("getProducts");
+      this.$store.dispatch("Products/getProducts");
     },
   },
   beforeMount() {
     this.getProducts();
+    console.log(process.env.VUE_APP_BASE_URL);
   },
 };
 </script>

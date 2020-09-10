@@ -1,12 +1,12 @@
 <template>
   <div class="d-flex flex-wrap justify-content-center">
     <product-card
-      v-for="product in Products"
-      :key="product.code"
-      :brand="product.brands"
-      :title="product.product_name"
-      :image="product.image_url"
-      :nutriscore="product.nutriscore_grade"
+      v-for="product in getProducts"
+      :key="product.codebar"
+      :brand="product.brand"
+      :title="product.title"
+      :image="image(product.image)"
+      :nutriscore="product.nutri_score"
       :novagroup="product.nova_group"
     />
   </div>
@@ -21,7 +21,19 @@ export default {
     ProductCard,
   },
   computed: {
-    ...mapGetters(["Products"]),
+    ...mapGetters('Products', ["getProducts"]),
+  },
+  methods: {
+    image(imageProduct) {
+      if (imageProduct) {
+        if (imageProduct.startsWith("/")) {
+          imageProduct =
+            "https://degrassi-crown-08212.herokuapp.com/images/products" +
+            imageProduct;
+        }
+        return imageProduct;
+      }
+    },
   },
 };
 </script>
